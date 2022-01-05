@@ -17,23 +17,26 @@ class App extends React.Component {
   }
   
   calculate = () => {
-    console.log(this.state);
     if (this.state.symbol === "+") {
       this.setState({
-        result: parseInt(this.state.firstChoice) + parseInt(this.state.secondChoice),
-        resultToShow: parseInt(this.state.firstChoice) + parseInt(this.state.secondChoice),
+        result: !this.state.firstChoice && !this.state.secondChoice ? 
+          this.state.result + this.state.result : parseInt(this.state.firstChoice) + parseInt(this.state.secondChoice),
+        resultToShow: !this.state.firstChoice && !this.state.secondChoice ? 
+          this.state.result + this.state.result : parseInt(this.state.firstChoice) + parseInt(this.state.secondChoice),
       }, () => {});
     }
     if (this.state.symbol === "-") {
       this.setState({
-        result: parseInt(this.state.firstChoice) - parseInt(this.state.secondChoice),
-        resultToShow: parseInt(this.state.firstChoice) - parseInt(this.state.secondChoice),
+        result: !this.state.firstChoice && !this.state.secondChoice ? 
+          this.state.result - this.state.result : parseInt(this.state.firstChoice) - parseInt(this.state.secondChoice),
+        resultToShow: !this.state.firstChoice && !this.state.secondChoice ? 
+          this.state.result - this.state.result : parseInt(this.state.firstChoice) - parseInt(this.state.secondChoice),
       }, () => {});
     }
     if (this.state.symbol === "x") {
       this.setState({
-        result: parseInt(this.state.firstChoice) * parseInt(this.state.secondChoice),
-        resultToShow: parseInt(this.state.firstChoice) * parseInt(this.state.secondChoice),
+        result: !this.state.firstChoice ? this.state.result * this.state.result : parseInt(this.state.firstChoice) * parseInt(this.state.secondChoice),
+        resultToShow: !this.state.firstChoice ? this.state.result * this.state.result : parseInt(this.state.firstChoice) * parseInt(this.state.secondChoice),
       }, () => {});
     }
     if (this.state.symbol === "%") {
@@ -62,7 +65,6 @@ class App extends React.Component {
   }
 
   onBtnClick = (value) => {
-    console.log(value);
     const regExSymbol = /[\+\-\x\÷]/;
     const regExNumbers = /(?:\d+(?:\.\d*)?|\.\d+)/;
 
@@ -137,7 +139,6 @@ class App extends React.Component {
 
       // { firstChoice: null, secondChoice: null, symbol: "%", result: 0, resultToShow: 0 }
       if (!this.state.firstChoice) {
-        console.log(value);
         this.setState({
           firstChoice: this.state.result,
           symbol: value
