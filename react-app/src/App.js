@@ -15,16 +15,36 @@ class App extends React.Component {
       resultToShow: 0
     }
   }
-  
+
   calculate = () => {
+    // 0 + 0
     if (this.state.symbol === "+") {
-      this.setState({
-        result: !this.state.firstChoice && !this.state.secondChoice ? 
+      // ! MUST CORRECT
+      // If number is a float
+      if ((this.state.firstChoice || this.state.secondChoice) % 1 !== 0) {
+        console.log("lol");
+        this.setState({
+          result: !this.state.firstChoice && !this.state.secondChoice ? 
+            parseFloat(this.state.result).toFixed(2) + parseFloat(this.state.result).toFixed(2) : 
+              parseInt(parseFloat(this.state.firstChoice).toFixed(2)) + 
+              parseInt(parseFloat(this.state.secondChoice).toFixed(2)),
+          resultToShow: !this.state.firstChoice && !this.state.secondChoice ? 
+            parseFloat(this.state.result).toFixed(2) + parseFloat(this.state.result).toFixed(2) : 
+            parseInt(parseFloat(this.state.firstChoice).toFixed(2)) + 
+            parseInt(parseFloat(this.state.secondChoice).toFixed(2))
+        }, () => {});
+      // If number is not a float
+      } else {
+        this.setState({
+          result: !this.state.firstChoice && !this.state.secondChoice ? 
           this.state.result + this.state.result : parseInt(this.state.firstChoice) + parseInt(this.state.secondChoice),
-        resultToShow: !this.state.firstChoice && !this.state.secondChoice ? 
+          resultToShow: !this.state.firstChoice && !this.state.secondChoice ? 
           this.state.result + this.state.result : parseInt(this.state.firstChoice) + parseInt(this.state.secondChoice),
-      }, () => {});
+        }, () => {});
+      }
     }
+
+    // 0 - 0
     if (this.state.symbol === "-") {
       this.setState({
         result: !this.state.firstChoice && !this.state.secondChoice ? 
@@ -33,24 +53,34 @@ class App extends React.Component {
           this.state.result - this.state.result : parseInt(this.state.firstChoice) - parseInt(this.state.secondChoice),
       }, () => {});
     }
+
+    // 0 * 0
     if (this.state.symbol === "x") {
       this.setState({
         result: !this.state.firstChoice ? this.state.result * this.state.result : parseInt(this.state.firstChoice) * parseInt(this.state.secondChoice),
         resultToShow: !this.state.firstChoice ? this.state.result * this.state.result : parseInt(this.state.firstChoice) * parseInt(this.state.secondChoice),
       }, () => {});
     }
+
+    // 0 / 100
     if (this.state.symbol === "%") {
       this.setState({
         result: parseInt(this.state.firstChoice) / 100,
         resultToShow: parseInt(this.state.firstChoice) / 100,
       }, () => {});
     }
+
+    // 0 / 0
     if (this.state.symbol === "÷") {
       this.setState({
-        result: parseInt(this.state.firstChoice) / parseInt(this.state.secondChoice),
-        resultToShow: parseInt(this.state.firstChoice) / parseInt(this.state.secondChoice),
+        result: !this.state.firstChoice && !this.state.secondChoice ? 
+          this.state.result / this.state.result : parseInt(this.state.firstChoice) / parseInt(this.state.secondChoice),
+        resultToShow: !this.state.firstChoice && !this.state.secondChoice ? 
+        this.state.result / this.state.result : parseInt(this.state.firstChoice) / parseInt(this.state.secondChoice),
       }, () => {});
     }
+
+    // +/- 0
     if (this.state.symbol === "±") {
       this.setState({
         result: parseInt(this.state.firstChoice) * -1,
@@ -85,28 +115,28 @@ class App extends React.Component {
         this.setState({
           firstChoice: value,
           resultToShow: value
-        }, () => {console.log(this.state)});
+        }, () => {});
 
       // { firstChoice: 111111, secondChoice: null, symbol: null, result: 0, resultToShow: 111111 }
       } else if (this.state.firstChoice && !this.state.symbol) {
         this.setState({
           firstChoice: this.state.firstChoice === 0 ? value : this.state.firstChoice + value,
           resultToShow: this.state.resultToShow === 0 ? value : this.state.resultToShow + value
-        }, () => {console.log(this.state)});
+        }, () => {});
 
         // { firstChoice: 0, secondChoice: null, symbol: "+", result: 0, resultToShow: 0 }
       } else if ((this.state.firstChoice && !this.state.secondChoice) && this.state.symbol) {
         this.setState({
           secondChoice: value,
           resultToShow: value
-        }, () => {console.log(this.state)});
+        }, () => {});
 
         // { firstChoice: 11111, secondChoice: 11111, symbol: "+", result: 0, resultToShow: 111111 }
       } else if ((this.state.firstChoice && this.state.secondChoice) && this.state.symbol) {
         this.setState({
           secondChoice: this.state.secondChoice === 0 ? value : this.state.secondChoice + value,
           resultToShow: this.state.resultToShow === 0 ? value : this.state.resultToShow + value
-        }, () => {console.log(this.state)});
+        }, () => {});
 
         // { firstChoice: null, secondChoice: null, symbol: "+", result: 0, resultToShow: 0 }
       } else if ((!this.state.firstChoice && !this.state.secondChoice) && this.state.symbol) {
@@ -121,7 +151,7 @@ class App extends React.Component {
         this.setState({
           secondChoice: this.state.secondChoice === 0 ? value : this.state.secondChoice + value,
           resultToShow: this.state.resultToShow === 0 ? value : this.state.resultToShow + value
-        }, () => {console.log(this.state)});
+        }, () => {});
       }
 
       // { firstChoice: 0, secondChoice: 0, symbol: "AC", result: 0, resultToShow: 0 }
@@ -154,6 +184,13 @@ class App extends React.Component {
       // { firstChoice: null, secondChoice: null, symbol: "=", result: 0, resultToShow: 0 }
     } else if (value === "=") {
       this.calculate();
+
+      // { firstChoice: 0.0, secondChoice: null, symbol: null, result: 0, resultToShow: 0 }
+    } else if (value === ".") {
+      this.setState({
+        firstChoice: this.state.firstChoice + value,
+        resultToShow: this.state.resultToShow + value
+      }, () => {console.log(this.state)});
     }
 
     // { firstChoice: 0, secondChoice: 0, symbol: "+", result: 0, resultToShow: 0 }
