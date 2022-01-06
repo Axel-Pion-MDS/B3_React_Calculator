@@ -19,19 +19,17 @@ class App extends React.Component {
   calculate = () => {
     // 0 + 0
     if (this.state.symbol === "+") {
-      // ! MUST CORRECT
+      // ! WORKS WHEN this.state.firstChoice && this.state.secondChoice ONLY ONCE
+      // ! MUST CORRECT IT
       // If number is a float
       if ((this.state.firstChoice || this.state.secondChoice) % 1 !== 0) {
-        console.log("lol");
         this.setState({
           result: !this.state.firstChoice && !this.state.secondChoice ? 
-            parseFloat(this.state.result).toFixed(2) + parseFloat(this.state.result).toFixed(2) : 
-              parseInt(parseFloat(this.state.firstChoice).toFixed(2)) + 
-              parseInt(parseFloat(this.state.secondChoice).toFixed(2)),
+            (parseFloat(this.state.result) + parseFloat(this.state.result)).toFixed(2) : 
+            (parseFloat(this.state.firstChoice) + parseFloat(this.state.secondChoice)).toFixed(2),
           resultToShow: !this.state.firstChoice && !this.state.secondChoice ? 
-            parseFloat(this.state.result).toFixed(2) + parseFloat(this.state.result).toFixed(2) : 
-            parseInt(parseFloat(this.state.firstChoice).toFixed(2)) + 
-            parseInt(parseFloat(this.state.secondChoice).toFixed(2))
+            (parseFloat(this.state.result) + parseFloat(this.state.result)).toFixed(2) : 
+            (parseFloat(this.state.firstChoice) + parseFloat(this.state.secondChoice)).toFixed(2)
         }, () => {});
       // If number is not a float
       } else {
@@ -57,8 +55,10 @@ class App extends React.Component {
     // 0 * 0
     if (this.state.symbol === "x") {
       this.setState({
-        result: !this.state.firstChoice ? this.state.result * this.state.result : parseInt(this.state.firstChoice) * parseInt(this.state.secondChoice),
-        resultToShow: !this.state.firstChoice ? this.state.result * this.state.result : parseInt(this.state.firstChoice) * parseInt(this.state.secondChoice),
+        result: !this.state.firstChoice ? 
+        this.state.result * this.state.result : parseInt(this.state.firstChoice) * parseInt(this.state.secondChoice),
+        resultToShow: !this.state.firstChoice ? 
+        this.state.result * this.state.result : parseInt(this.state.firstChoice) * parseInt(this.state.secondChoice),
       }, () => {});
     }
 
