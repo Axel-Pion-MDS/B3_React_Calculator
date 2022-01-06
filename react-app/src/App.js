@@ -19,7 +19,7 @@ class App extends React.Component {
   calculate = () => {
     // 0 + 0
     if (this.state.symbol === "+") {
-      // ! WORKS WHEN this.state.firstChoice && this.state.secondChoice ONLY ONCE
+      // ! WORKS WHEN this.state.firstChoice && this.state.secondChoice ONLY WHEN 3.5 + 5 = 8.5
       // ! MUST CORRECT IT
       // If number is a float
       if ((this.state.firstChoice || this.state.secondChoice) % 1 !== 0) {
@@ -31,6 +31,7 @@ class App extends React.Component {
             (parseFloat(this.state.result) + parseFloat(this.state.result)).toFixed(2) : 
             (parseFloat(this.state.firstChoice) + parseFloat(this.state.secondChoice)).toFixed(2)
         }, () => {});
+        
       // If number is not a float
       } else {
         this.setState({
